@@ -1,0 +1,27 @@
+# port config
+server:
+  port: 8006
+
+spring:
+  application:
+    name: cloud-order
+  datasource:
+    url: jdbc:mysql:http://171.16.55.44:8080/dubbo/
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+eureka:
+  instance:
+    hostname: cloud-order
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 15
+  client:
+    service-url:
+      defaultZone: http://localhost:8005/eureka/
+    enabled: true
+    register-with-eureka: true
+    fetch-registry: true
+
+

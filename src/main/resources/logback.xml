@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- configuration 只有三个属性
+  scan属性为true时候，当配置文件发生变化将会被重新加载 默认是true ；
+
+  scanPeriod属性 检测配置文件是否修改的时间间隔 没有给出时间单位的默认是毫秒，
+  当 scan为true时，scanPeriod默认是 60 seconds ；
+
+  debug属于为true时将打印logback的内部日志，用于追踪logback的运行情况，默认是false
+
+ -->
+<configuration scan="true" scanPeriod="60 seconds" debug="false" >
+
+	<!--
+	  contextName 节点用于配置程序的名称，默认是default
+	  设置上下文名称，用于区分不同的程序，默认是default
+	-->
+	<contextName>cloud-order</contextName>
+	<!--
+	  property 节点用于设计变量，有两个属性 name 和 value
+	  设置完变量之后，后面使用通过" ${} " 方式
+      <property name="appName" value="spring-tx"  />
+	  <property>
+		<name>appName</name>
+		<value>spring-tx</value>
+	  </property>
+	  <contextName>${appName}</contextName>
+	-->
+
+
+	<!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径 -->
+	<property name="LOG_HOME" value="/home/org/jerfan/logs/sky" />
+
+	<!-- 控制台输出 -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} |-%level [%thread] %logger{50} [%file:%line] - %msg%n</pattern>
+		</layout>
+	</appender>
+	<!-- 按照每天生成日志文件 -->
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/cloud-order.log</file>
+
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!--日志文件输出的文件名 -->
+			<FileNamePattern>
+				${LOG_HOME}/testNg.log.%d{yyyy-MM-dd}.log.%i
+			</FileNamePattern>
+
+			<!--日志文件保留天数 -->
+			<MaxHistory>30</MaxHistory>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} |-%level [%thread] %logger{20} [%file:%line] - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<!-- 日志输出级别 -->
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE" />
+	</root>
+
+</configuration>
