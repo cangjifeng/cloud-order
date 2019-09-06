@@ -1,12 +1,9 @@
 package org.jerfan.order.service;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
-import org.jerfan.order.queue.base.CodeEnum;
-import org.jerfan.order.queue.base.ResultBean;
+import org.jerfan.order.executor.base.CodeEnum;
+import org.jerfan.order.executor.base.ResultBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 /**
  * @author jerfan.cang

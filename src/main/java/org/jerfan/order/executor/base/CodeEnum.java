@@ -1,4 +1,4 @@
-package org.jerfan.order.queue.base;
+package org.jerfan.order.executor.base;
 
 /**
  * 错误码枚举

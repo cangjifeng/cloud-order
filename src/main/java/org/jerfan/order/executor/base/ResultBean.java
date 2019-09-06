@@ -1,6 +1,5 @@
-package org.jerfan.order.queue.base;
+package org.jerfan.order.executor.base;
 
-import javax.annotation.Resource;
 import java.io.Serializable;
 
 /**

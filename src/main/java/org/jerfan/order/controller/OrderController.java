@@ -2,9 +2,11 @@ package org.jerfan.order.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.jerfan.order.queue.ServerExecutor;
-import org.jerfan.order.queue.base.ClazzObject;
-import org.jerfan.order.queue.base.ResultBean;
+import org.jerfan.order.executor.ServerExecutor;
+import org.jerfan.order.executor.ThreadServerExecutor;
+import org.jerfan.order.executor.base.ClazzObject;
+import org.jerfan.order.executor.base.CodeEnum;
+import org.jerfan.order.executor.base.ResultBean;
 import org.jerfan.order.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +27,9 @@ public class OrderController {
 
     @Resource(name = "simpleServerExecutor")
     private ServerExecutor serverExecutor;
+
+    @Resource(name  ="threadServerExecutor")
+    private ThreadServerExecutor threadServerExecutor;
     /*@Resource
     private CouponOrderService couponOrderService;*/
     /*@Resource
@@ -85,6 +90,40 @@ public class OrderController {
                 "查询订单详情,mall,"+System.currentTimeMillis());
         return resultBean;
     }
+
+    /**
+     * 异步组合 CommonOrderService.createCommonOrder ， OrderStatusRecordService.addOrderStatusRecord
+     * @param orderNo 订单号
+     * @return ResultBean
+     */
+    @ApiOperation(value = "thread/common/order/{orderNo}",responseContainer="String.class",tags = {"1.0"},notes = "保存 common order",httpMethod ="GET", response =String.class )
+    @ResponseBody
+    @RequestMapping(value = "thread/common/order/{orderNo}",method = RequestMethod.GET)
+    public ResultBean<?>  threadSaveCommonOrder(@PathVariable String orderNo){
+        LOGGER.info("thread common order param -- orderNo:{}",orderNo);
+        ClazzObject[] request = { new ClazzObject(CommonOrderService.class,"createCommonOrder",orderNo),
+                new ClazzObject(OrderStatusRecordService.class,"addOrderStatusRecord",orderNo)};
+        ResultBean resultBean = threadServerExecutor.handle(request,"异步普通订单,mall,"+System.currentTimeMillis());
+        return resultBean;
+    }
+
+
+    /**
+     * 查询异步执行结果
+     * @param messageId 订单号
+     * @return ResultBean
+     */
+    @ApiOperation(value = "thread/{messageId}",responseContainer="String.class",tags = {"1.0"},notes = "保存 common order",httpMethod ="GET", response =String.class )
+    @ResponseBody
+    @RequestMapping(value = "thread/{messageId}",method = RequestMethod.GET)
+    public ResultBean<?>  queryThreadResult(@PathVariable String messageId){
+        LOGGER.info("queryThreadResult -- messageId:{}",messageId);
+        String status = ServerExecutor.threadMap.get(messageId);
+        return  new ResultBean(CodeEnum.EXECUTE_SERVER_SUCCESS.getCode(),
+                CodeEnum.EXECUTE_SERVER_SUCCESS.getMessage(),
+                "messageId:"+messageId+" -- status:"+status);
+    }
+
 
 
 }

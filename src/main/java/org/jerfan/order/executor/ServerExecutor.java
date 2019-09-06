@@ -1,7 +1,10 @@
-package org.jerfan.order.queue;
+package org.jerfan.order.executor;
 
-import org.jerfan.order.queue.base.ClazzObject;
-import org.jerfan.order.queue.base.ResultBean;
+import org.jerfan.order.executor.base.ClazzObject;
+import org.jerfan.order.executor.base.ResultBean;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author jerfan.cang
@@ -9,6 +12,10 @@ import org.jerfan.order.queue.base.ResultBean;
  */
 public interface ServerExecutor {
 
+    /**
+     * 模拟异步 记录异步请求记录和执行结果 实际使用redis代替
+     */
+    Map<String,String> threadMap = new HashMap<>();
 
     /**
      * 多服务调用

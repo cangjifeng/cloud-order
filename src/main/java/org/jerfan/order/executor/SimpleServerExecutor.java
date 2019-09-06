@@ -1,8 +1,8 @@
-package org.jerfan.order.queue;
+package org.jerfan.order.executor;
 
-import org.jerfan.order.queue.base.ClazzObject;
-import org.jerfan.order.queue.base.CodeEnum;
-import org.jerfan.order.queue.base.ResultBean;
+import org.jerfan.order.executor.base.ClazzObject;
+import org.jerfan.order.executor.base.CodeEnum;
+import org.jerfan.order.executor.base.ResultBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
  * @date 2019/9/6  10:25
  */
 @Component(value = "simpleServerExecutor")
-public class SimpleServerExecutor extends AbstractServiceExecutor implements ServerExecutor {
+public class SimpleServerExecutor extends AbstractServerExecutor implements ServerExecutor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SimpleServerExecutor.class);
 

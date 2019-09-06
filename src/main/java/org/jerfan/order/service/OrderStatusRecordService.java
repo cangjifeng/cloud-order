@@ -1,7 +1,7 @@
 package org.jerfan.order.service;
 
-import org.jerfan.order.queue.base.CodeEnum;
-import org.jerfan.order.queue.base.ResultBean;
+import org.jerfan.order.executor.base.CodeEnum;
+import org.jerfan.order.executor.base.ResultBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
