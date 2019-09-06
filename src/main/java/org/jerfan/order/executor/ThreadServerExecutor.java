@@ -29,13 +29,12 @@ public class ThreadServerExecutor extends AbstractServerExecutor implements Serv
         Runnable task = () -> {
             try{
                 for(ClazzObject  clazzObject : request){
-
                     ResultBean resultBean =callServer(clazzObject);
                     if( null == resultBean || CodeEnum.EXECUTE_SERVER_FAIL.getCode().equals(resultBean.getCode()) ){
                         // 状态标记为{执行失败}
                         markTheadResult(messageId,"fail");
                     }
-                    LOGGER.info("server execute threadinfo -- serverName:{}, methodName:{}, param:{}, result:{} 。",clazzObject.getClazz().getName(),clazzObject.getMethodName(),clazzObject.getParam(),resultBean);
+                    LOGGER.info("server execute thread info -- serverName:{}, methodName:{}, param:{}, result:{} 。",clazzObject.getClazz().getName(),clazzObject.getMethodName(),clazzObject.getParam(),resultBean);
                 }
             }catch (Exception e){
                 LOGGER.error("异步执行接口服务调用 exception:{}",e);

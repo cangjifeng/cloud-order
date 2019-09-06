@@ -7,8 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Method;
-
 /**
  * 简单的服务调用组合
  * @author jerfan.cang
@@ -36,20 +34,17 @@ public class SimpleServerExecutor extends AbstractServerExecutor implements Serv
         }
         try{
             for(ClazzObject  clazzObject : request){
-                Class clazz = clazzObject.getClazz();
-                String methodName = clazzObject.getMethodName();
-                Object param = clazzObject.getParam();
-                Method method = clazz.newInstance().getClass().getDeclaredMethod(methodName,param.getClass());
-                method.setAccessible(true);
-                ResultBean  resultBean= (ResultBean) method.invoke(clazz.newInstance(),param);
+                ResultBean  resultBean= callServer(clazzObject);
                 if( null == resultBean || CodeEnum.EXECUTE_SERVER_FAIL.getCode().equals(resultBean.getCode()) ){
                     rs = new ResultBean<>(CodeEnum.EXECUTE_SERVER_FAIL.getCode(),
                             CodeEnum.EXECUTE_SERVER_FAIL.getMessage());
-                    LOGGER.error("server execute info -- serverName:{}, methodName:{}, param:{}, result:{} 。",clazz.getName(),methodName,param,rs);
+                    LOGGER.error("server execute info -- serverName:{}, methodName:{}, param:{}, result:{} 。",
+                            clazzObject.getClass().getName(),clazzObject.getMethodName(),clazzObject.getParam(),rs);
                     return rs;
                 }
                 rs = resultBean;
-                LOGGER.info("server execute info -- serverName:{}, methodName:{}, param:{}, result:{} 。",clazz.getName(),methodName,param,rs);
+                LOGGER.info("server execute info -- serverName:{}, methodName:{}, param:{}, result:{} 。",
+                        clazzObject.getClazz().getName(),clazzObject.getMethodName(),clazzObject.getParam(),rs);
             }
             if( null != rs && !rs.hasError()){
                 return rs;
