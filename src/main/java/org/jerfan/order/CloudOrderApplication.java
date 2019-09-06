@@ -11,6 +11,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 public class CloudOrderApplication {
 
     public static void main(String[] args) {
+        // http://localhost:8006/swagger-ui.html#/
         SpringApplication.run(CloudOrderApplication.class, args);
     }
 
